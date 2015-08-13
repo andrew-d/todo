@@ -26,6 +26,9 @@ _testmain.go
 # Built binary
 todo
 
+# Database
+*.db
+
 # OS X stuff
 .DS_Store
 ._*

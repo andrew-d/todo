@@ -30,8 +30,16 @@ func (m Migrator) Setup(tx migration.LimitedTx) error {
 
 const todosTable = `
 CREATE TABLE IF NOT EXISTS todos (
-	 id         INTEGER PRIMARY KEY AUTOINCREMENT
-	,text       TEXT NOT NULL
-	,complete   BOOLEAN NOT NULL
+	 id          INTEGER PRIMARY KEY AUTOINCREMENT
+	,text        TEXT NOT NULL
+	,complete    BOOLEAN NOT NULL
+	,previous_id INTEGER NOT NULL       -- First item will be -1
+
+	-- Previous IDs must be in this table
+	,FOREIGN KEY (previous_id) REFERENCES todos(id)
+
+	-- Previous IDs must be unique - i.e. can't have two items with the same
+	-- previous ID.
+	,UNIQUE (previous_id)
 )
 `

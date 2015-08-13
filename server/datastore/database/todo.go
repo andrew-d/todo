@@ -36,12 +36,52 @@ func (s *TodoStore) CreateTodo(todo *model.Todo) error {
 	}
 
 	todo.ID, _ = ret.LastInsertId()
+
+	// Get the record we just inserted in order to retrieve the order.
+	inserted, err := s.GetTodo(todo.ID)
+	if err == nil {
+		todo.PreviousID = inserted.PreviousID
+	}
+
 	return nil
 }
 
-func (s *TodoStore) DeleteTodo(id int64) error {
-	_, err := s.db.Exec(s.db.Rebind(todoDeleteQuery), id)
-	return err
+func (s *TodoStore) DeleteTodo(id int64) (err error) {
+	var tx *sqlx.Tx
+
+	tx, err = s.db.Beginx()
+	if err != nil {
+		return
+	}
+
+	// Automatically rollback/commit if there's an error.
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		} else {
+			tx.Commit()
+		}
+	}()
+
+	// Get the given Todo
+	todo := &model.Todo{}
+	if err = tx.Get(todo, s.db.Rebind(todoGetQuery), id); err != nil {
+		return
+	}
+
+	// Remove the given Todo
+	if _, err = tx.Exec(s.db.Rebind(todoDeleteQuery), id); err != nil {
+		return
+	}
+
+	// Fix any previous link - change any `previous_id` that points at our
+	// current id to point at what we point at.
+	if _, err = tx.Exec(s.db.Rebind(todoRelinkQuery), todo.PreviousID, id); err != nil {
+		return
+	}
+
+	// Done!
+	return nil
 }
 
 const todoListQuery = `
@@ -62,12 +102,23 @@ INSERT
 INTO todos (
      text
 	,complete
+	,previous_id
 )
-VALUES (?, ?)
+SELECT
+	 ?
+	,?
+	,COALESCE(MAX(id), -1)
+FROM todos
 `
 
 const todoDeleteQuery = `
 DELETE
 FROM todos
 WHERE id = ?
+`
+
+const todoRelinkQuery = `
+UPDATE todos
+SET previous_id = ?
+WHERE previous_id = ?
 `

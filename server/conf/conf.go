@@ -11,7 +11,7 @@ import (
 
 type Config struct {
 	// General configuration
-	Debug bool
+	Debug bool `json:"debug"`
 
 	// Web configuration
 	WebHost       string `json:"host"`
