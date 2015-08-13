@@ -1,0 +1,64 @@
+{
+	"ImportPath": "github.com/andrew-d/todo",
+	"GoVersion": "go1.4.2",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/BurntSushi/migration",
+			"Rev": "c45b897f13350786ccaf2b7403b92b1c7ad85844"
+		},
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.7.2-2-ge00ed35",
+			"Rev": "e00ed35f54d331c88f1867a18a7bfc4e4e4685ac"
+		},
+		{
+			"ImportPath": "github.com/andrew-d/webhelpers",
+			"Rev": "f2f7c79c80188345d7893275922ba2e26789057d"
+		},
+		{
+			"ImportPath": "github.com/go-sql-driver/mysql",
+			"Comment": "go1",
+			"Rev": "9a7aa3606b82e2081a13a008ada88dfdb96c20fd"
+		},
+		{
+			"ImportPath": "github.com/goji/context",
+			"Rev": "cc5d214cefa9d50beb2cdbf2344eb8c4bd14709b"
+		},
+		{
+			"ImportPath": "github.com/jmoiron/sqlx",
+			"Comment": "sqlx-v1.1-18-g56b62f2",
+			"Rev": "56b62f29e9936b8fc0db14ed01297f88ba518333"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-58-g0dad96c",
+			"Rev": "0dad96c0b94f8dee039aa40467f767467392a0af"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-sqlite3",
+			"Comment": "v1.0.0",
+			"Rev": "b4142c444a8941d0d92b0b7103a24df9cd815e42"
+		},
+		{
+			"ImportPath": "github.com/tylerb/graceful",
+			"Comment": "v1.2.1",
+			"Rev": "ac9ebe4f1ee151ac1eeeaef32957085cba64d508"
+		},
+		{
+			"ImportPath": "github.com/zenazn/goji/web",
+			"Comment": "v0.9.0-27-g4faf9df",
+			"Rev": "4faf9dfc1c88f0858e889b2d6903b4c4dbca11af"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "51854aba4682903632d14998d47781fe34e62a02"
+		},
+		{
+			"ImportPath": "golang.org/x/net/netutil",
+			"Rev": "51854aba4682903632d14998d47781fe34e62a02"
+		}
+	]
+}
