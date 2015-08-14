@@ -29,7 +29,8 @@ func (s *TodoStore) GetTodo(id int64) (*model.Todo, error) {
 func (s *TodoStore) CreateTodo(todo *model.Todo) error {
 	ret, err := s.db.Exec(RebindInsert(s.db, todoInsertQuery),
 		todo.Text,
-		false,
+		false, // completed
+		0,     // list id
 	)
 	if err != nil {
 		return err
@@ -76,7 +77,11 @@ func (s *TodoStore) DeleteTodo(id int64) (err error) {
 
 	// Fix any previous link - change any `previous_id` that points at our
 	// current id to point at what we point at.
-	if _, err = tx.Exec(s.db.Rebind(todoRelinkQuery), todo.PreviousID, id); err != nil {
+	if _, err = tx.Exec(s.db.Rebind(todoRelinkQuery),
+		todo.PreviousID, // New previous_id
+		id,              // Old previous_id
+		todo.ListID,     // List ID
+	); err != nil {
 		return
 	}
 
@@ -102,10 +107,12 @@ INSERT
 INTO todos (
      text
 	,complete
+	,list_id
 	,previous_id
 )
 SELECT
 	 ?
+	,?
 	,?
 	,COALESCE(MAX(id), -1)
 FROM todos
@@ -121,4 +128,5 @@ const todoRelinkQuery = `
 UPDATE todos
 SET previous_id = ?
 WHERE previous_id = ?
+  AND list_id = ?
 `
