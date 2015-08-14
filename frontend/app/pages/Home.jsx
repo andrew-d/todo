@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import size from 'lodash-node/modern/collection/size';
 
 import { fetchTodos } from '../actions/todos';
+import { fetchLists } from '../actions/lists';
 import TodoList from '../components/TodoList';
 import TodoListItem from '../components/TodoListItem';
 import TodoListMenu from '../components/TodoListMenu';
@@ -11,6 +12,7 @@ import TodoListMenuItem from '../components/TodoListMenuItem';
 
 class Home extends React.Component {
   componentWillMount() {
+    this.props.dispatch(fetchLists());
     this.props.dispatch(fetchTodos());
   }
 
