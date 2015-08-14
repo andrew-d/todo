@@ -7,10 +7,4 @@ export default {
            .then(checkStatus)
            .then(res => res.json());
   },
-
-  fetchTodo(id) {
-    return fetch(`/api/todos/${id}`)
-           .then(checkStatus)
-           .then(res => res.json());
-  },
 }

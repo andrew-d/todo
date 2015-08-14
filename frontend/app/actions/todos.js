@@ -2,22 +2,27 @@ import * as constants from '../constants';
 import TodoAPI from '../api/todos';
 
 
-export function fetchTodos(id) {
-  return dispatch => {
-    TodoAPI.fetchTodos(id)
-             .then(res => dispatch({
-               type: constants.RECEIVE_TODOS,
-               todos: res,
-             }));
+export function requestTodos() {
+  return {
+    type: constants.REQUEST_TODOS,
   };
 }
 
-export function fetchTodo(id) {
-  return dispatch => {
-    TodoAPI.fetchTodo(id)
-             .then(res => dispatch({
-               type: constants.RECEIVE_TODOS,
-               todos: [res],
-             }));
+export function receiveTodos(todos) {
+  return {
+    type: constants.RECEIVE_TODOS,
+    todos,
+  };
+}
+
+export function fetchTodos() {
+  return function(dispatch) {
+    dispatch(requestTodos());
+
+    TodoAPI
+      .fetchTodos()
+      .then(json =>
+        dispatch(receiveTodos(json))
+      );
   };
 }

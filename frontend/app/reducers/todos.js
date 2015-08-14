@@ -5,7 +5,15 @@ const initialState = {};
 
 
 const actionsMap = {
-  /* TODO */
+  [constants.RECEIVE_TODOS]: (state, action) => {
+	let newState = state;
+
+	for( let todo of action.todos ) {
+	  newState[todo.id] = todo;
+	}
+
+	return newState;
+  },
 };
 
 
