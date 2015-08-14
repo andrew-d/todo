@@ -29,6 +29,12 @@ func (m Migrator) Setup(tx migration.LimitedTx) error {
 	return nil
 }
 
+// CreateDefaultList will insert a default (empty) list into the database.
+func (m Migrator) CreateDefaultList(tx migration.LimitedTx) error {
+	_, err := tx.Exec(createDefaultList)
+	return err
+}
+
 const listsTable = `
 CREATE TABLE IF NOT EXISTS lists (
 	 id   INTEGER PRIMARY KEY AUTOINCREMENT
@@ -52,4 +58,9 @@ CREATE TABLE IF NOT EXISTS todos (
 	-- previous ID in the same list.
 	,UNIQUE (list_id, previous_id)
 )
+`
+
+const createDefaultList = `
+INSERT INTO lists(name)
+VALUES ("Main")
 `

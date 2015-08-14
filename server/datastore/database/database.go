@@ -20,6 +20,7 @@ func Connect(driver, conn string) (*sqlx.DB, error) {
 
 	migrations := []migration.Migrator{
 		migrator.Setup,
+		migrator.CreateDefaultList,
 	}
 
 	db, err := migration.Open(driver, conn, migrations)
@@ -44,8 +45,10 @@ func MustConnect(driver, conn string) *sqlx.DB {
 
 func NewDatastore(db *sqlx.DB) datastore.Datastore {
 	return struct {
+		*ListStore
 		*TodoStore
 	}{
+		NewListStore(db),
 		NewTodoStore(db),
 	}
 }

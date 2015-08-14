@@ -98,10 +98,11 @@ func CreateTodo(c web.C, w http.ResponseWriter, r *http.Request) {
 	// Unmarshal the todo from the payload
 	defer r.Body.Close()
 	in := struct {
-		Text string `json:"text"`
+		Text   string `json:"text"`
+		ListID int64  `json:"list_id"`
 	}{}
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -110,10 +111,17 @@ func CreateTodo(c web.C, w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "no text given", http.StatusBadRequest)
 		return
 	}
+	if in.ListID == 0 {
+		http.Error(w, "invalid list_id given", http.StatusBadRequest)
+		return
+	}
 
 	// Create our 'normal' model.
-	todo := new(model.Todo)
-	todo.Text = in.Text
+	todo := &model.Todo{
+		Text:     in.Text,
+		Complete: false,
+		ListID:   in.ListID,
+	}
 
 	err := datastore.CreateTodo(ctx, todo)
 	if err != nil {
