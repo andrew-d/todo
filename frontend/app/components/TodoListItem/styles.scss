@@ -1,0 +1,8 @@
+.TodoListItem {
+
+  &.complete {
+    color: #777;
+    background-color: #EEE;
+    text-decoration: line-through;
+  }
+}

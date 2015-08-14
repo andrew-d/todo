@@ -1,0 +1,13 @@
+.TodoList {
+  .header {
+    // The top corners should be rounded.
+    border-radius: 15px 15px 0px 0px;
+
+    // TODO: maybe don't use the `active` class and put the color here?
+
+    h4 {
+      text-align: center;
+      font-variant: small-caps;
+    }
+  }
+}
