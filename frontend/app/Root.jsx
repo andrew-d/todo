@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Router } from 'react-router';
 
-import { applyMiddleware, createStore, combineReducers, compose } from 'redux';
+import { applyMiddleware, createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 
-import * as reducers from './reducers';
+import reducer from './reducers';
 
 
 // In production, we want to use just the middleware.
@@ -28,9 +28,6 @@ if (process.env.NODE_ENV === 'production') {
     createStore
   );
 }
-
-// Build reducers.
-const reducer = combineReducers(reducers);
 
 // Build final store.
 const store = createStoreWithMiddleware(reducer, {});

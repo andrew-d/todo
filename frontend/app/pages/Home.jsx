@@ -24,18 +24,14 @@ class Home extends React.Component {
         </div>
 
         <div className='col-md-9'>
-          {this.renderTodoListFor(0 /* TODO */)}
+          {this.renderTodoListFor(1 /* TODO */)}
         </div>
       </div>
     );
   }
 
   renderMenu() {
-    const menuItems = [
-      {id: 1, name: 'Main List'},
-      {id: 2, name: 'Other List 1'},
-      {id: 3, name: 'Other List 2'},
-    ];
+    const menuItems = Object.values(this.props.lists);
 
     const renderedItems = menuItems.map((item) => (
       <TodoListMenuItem
@@ -54,12 +50,10 @@ class Home extends React.Component {
   }
 
   renderTodoListFor(id) {
-    // TODO:
-    const listItems = [
-      {id: 1, text: 'Item One', complete: false},
-      {id: 2, text: 'Item Two', complete: false},
-      {id: 3, text: 'Item Three', complete: true},
-    ];
+    if( !this.props.lists[id] ) return <div>No Such List</div>;
+
+    // Get all Todos in this list.
+    const listItems = Object.values(this.props.todos).filter(item => item.list_id === id);
 
     const renderedItems = listItems.map((item) => (
       <TodoListItem
@@ -92,7 +86,7 @@ class Home extends React.Component {
 
 
     return [
-      <TodoList key='list' listName='Main TODO List'>
+      <TodoList key='list' listName={this.props.lists[id].name}>
         {renderedItems}
       </TodoList>,
       progressBar,
@@ -102,5 +96,6 @@ class Home extends React.Component {
 
 
 export default connect(state => ({
-  todos: state.todos,
+  lists: state.data.lists,
+  todos: state.data.todos,
 }))(Home);

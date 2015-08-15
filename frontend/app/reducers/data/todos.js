@@ -1,15 +1,15 @@
-import * as constants from '../constants';
+import * as constants from '../../constants';
 
 
 const initialState = {};
 
 
 const actionsMap = {
-  [constants.RECEIVE_LISTS]: (state, action) => {
+  [constants.RECEIVE_TODOS]: (state, action) => {
 	let newState = state;
 
-	for( let list of action.lists ) {
-	  newState[list.id] = list;
+	for( let todo of action.todos ) {
+	  newState[todo.id] = todo;
 	}
 
 	return newState;
@@ -17,7 +17,7 @@ const actionsMap = {
 };
 
 
-export default function listStore(state = initialState, action) {
+export default function todoStore(state = initialState, action) {
   const reduceFunc = actionsMap[action.type];
   if( !reduceFunc ) return state;
 

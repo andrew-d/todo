@@ -30,7 +30,7 @@ func (s *TodoStore) CreateTodo(todo *model.Todo) error {
 	ret, err := s.db.Exec(RebindInsert(s.db, todoInsertQuery),
 		todo.Text,
 		false, // completed
-		0,     // list id
+		todo.ListID,
 	)
 	if err != nil {
 		return err
