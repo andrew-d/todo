@@ -8,6 +8,7 @@ export default class TodoListMenuItem extends React.Component {
     name:           React.PropTypes.string.isRequired,
     totalItems:     React.PropTypes.number,
     completedItems: React.PropTypes.number,
+    onClick:        React.PropTypes.func,
 
     // TODO: active item
   }
@@ -26,8 +27,16 @@ export default class TodoListMenuItem extends React.Component {
       span = null;
     }
 
+    // Additional properties.
+    let props = {};
+    ['onClick'].forEach((prop) => {
+      if( this.props[prop] ) {
+        props[prop] = this.props[prop];
+      }
+    });
+
     return (
-      <a className='TodoListMenuItem list-group-item'>
+      <a className='TodoListMenuItem list-group-item' {...props}>
         {span}
         {this.props.name}
       </a>

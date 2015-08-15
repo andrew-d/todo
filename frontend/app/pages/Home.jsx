@@ -4,6 +4,7 @@ import size from 'lodash-node/modern/collection/size';
 
 import { fetchTodos } from '../actions/todos';
 import { fetchLists } from '../actions/lists';
+import { selectList } from '../actions/ui';
 import TodoList from '../components/TodoList';
 import TodoListItem from '../components/TodoListItem';
 import TodoListMenu from '../components/TodoListMenu';
@@ -24,7 +25,7 @@ class Home extends React.Component {
         </div>
 
         <div className='col-md-9'>
-          {this.renderTodoListFor(1 /* TODO */)}
+          {this.renderTodoListFor(this.props.selectedList)}
         </div>
       </div>
     );
@@ -34,11 +35,13 @@ class Home extends React.Component {
     const menuItems = Object.values(this.props.lists);
 
     const renderedItems = menuItems.map((item) => (
+      // TODO: active item?
       <TodoListMenuItem
         key={`menu-item-${item.id}`}
         name={item.name}
         totalItems={10}
         completedItems={5}
+        onClick={this.handleSelectList.bind(this, item.id)}
       />
     ));
 
@@ -92,10 +95,15 @@ class Home extends React.Component {
       progressBar,
     ];
   }
+
+  handleSelectList(id) {
+    this.props.dispatch(selectList(id));
+  }
 }
 
 
 export default connect(state => ({
-  lists: state.data.lists,
-  todos: state.data.todos,
+  lists:        state.data.lists,
+  todos:        state.data.todos,
+  selectedList: state.ui.main.selectedList,
 }))(Home);
