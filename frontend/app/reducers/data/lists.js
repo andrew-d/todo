@@ -6,13 +6,13 @@ const initialState = {};
 
 const actionsMap = {
   [constants.RECEIVE_LISTS]: (state, action) => {
-	let newState = state;
+    let newState = state;
 
-	for( let list of action.lists ) {
-	  newState[list.id] = list;
-	}
+    for( let list of action.lists ) {
+      newState[list.id] = list;
+    }
 
-	return newState;
+    return newState;
   },
 };
 

@@ -8,8 +8,8 @@ const initialState = {
 
 const actionsMap = {
   [constants.SELECT_LIST]: (state, action) => ({
-	...state,
-	selectedList: action.selected,
+    ...state,
+    selectedList: action.selected,
   }),
 };
 
