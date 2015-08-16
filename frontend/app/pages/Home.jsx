@@ -1,4 +1,5 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import size from 'lodash-node/modern/collection/size';
 
@@ -13,8 +14,8 @@ import TodoListMenuItem from '../components/TodoListMenuItem';
 
 class Home extends React.Component {
   componentWillMount() {
-    this.props.dispatch(fetchLists());
-    this.props.dispatch(fetchTodos());
+    this.props.fetchLists();
+    this.props.fetchTodos();
   }
 
   render() {
@@ -25,7 +26,7 @@ class Home extends React.Component {
         </div>
 
         <div className='col-md-9'>
-          {this.renderTodoListFor(this.props.selectedList)}
+          {this.renderTodoList()}
         </div>
       </div>
     );
@@ -52,13 +53,10 @@ class Home extends React.Component {
     );
   }
 
-  renderTodoListFor(id) {
-    if( !this.props.lists[id] ) return <div>No Such List</div>;
+  renderTodoList() {
+    if( !this.props.list ) return <div>No Such List</div>;
 
-    // Get all Todos in this list.
-    const listItems = Object.values(this.props.todos).filter(item => item.list_id === id);
-
-    const renderedItems = listItems.map((item) => (
+    const renderedItems = this.props.todos.map((item) => (
       <TodoListItem
         key={`todo-item-${item.id}`}
         text={item.text}
@@ -89,7 +87,7 @@ class Home extends React.Component {
 
 
     return [
-      <TodoList key='list' listName={this.props.lists[id].name}>
+      <TodoList key='list' listName={this.props.list.name}>
         {renderedItems}
       </TodoList>,
       progressBar,
@@ -97,13 +95,40 @@ class Home extends React.Component {
   }
 
   handleSelectList(id) {
-    this.props.dispatch(selectList(id));
+    this.props.selectList(id);
   }
 }
 
 
-export default connect(state => ({
-  lists:        state.data.lists,
-  todos:        state.data.todos,
-  selectedList: state.ui.main.selectedList,
-}))(Home);
+function mapState(state) {
+  return {
+    lists:        state.data.lists,
+    todos:        state.data.todos,
+    selectedList: state.ui.main.selectedList,
+  };
+}
+
+function mapDispatch(dispatch) {
+  return bindActionCreators({
+    fetchTodos,
+    fetchLists,
+    selectList,
+  }, dispatch);
+}
+
+
+function mergeProps(state, actions, props) {
+  const currId = state.selectedList;
+
+  return Object.assign({}, props, {
+    todos:        Object.values(state.todos).filter(item => item.list_id === currId),
+    list:         state.lists[currId] || null,
+    lists:        state.lists,
+    selectedList: state.selectedList,
+
+    ...actions,
+  });
+}
+
+
+export default connect(mapState, mapDispatch, mergeProps)(Home);
