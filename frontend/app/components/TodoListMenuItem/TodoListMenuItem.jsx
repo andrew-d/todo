@@ -17,12 +17,12 @@ export default class TodoListMenuItem extends React.Component {
     let span;
     if( this.props.totalItems && this.props.completedItems ) {
       span = (
-        <span key='badge' className="badge">
+        <span key='badge' className='badge'>
           {this.props.completedItems} / {this.props.totalItems}
         </span>
       );
     } else if( this.props.totalItems ) {
-      span = <span key='badge' className="badge">{this.props.totalItems}</span>;
+      span = <span key='badge' className='badge'>{this.props.totalItems}</span>;
     } else {
       span = null;
     }

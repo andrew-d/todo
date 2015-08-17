@@ -52,9 +52,9 @@ export default class Root extends React.Component {
 import routes from './routes';
 function renderRoutes(history) {
   let children = [
-    <Router history={history} key="router">
+    <Router history={history} key='router'>
       {routes}
-    </Router>
+    </Router>,
   ];
 
   if (process.env.NODE_ENV !== 'production') {
@@ -66,7 +66,7 @@ function renderRoutes(history) {
     const getStyle = (props) => Object.assign({}, getDefaultStyle(props), {zIndex: 9999});
 
     children.push(
-      <DebugPanel top right bottom key="debugPanel" getStyle={getStyle}>
+      <DebugPanel top right bottom key='debugPanel' getStyle={getStyle}>
         <DevTools store={store} monitor={LogMonitor}/>
       </DebugPanel>
     );

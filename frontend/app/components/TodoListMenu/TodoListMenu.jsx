@@ -5,7 +5,7 @@ import './styles.scss';
 
 export default class TodoListMenu extends React.Component {
   static propTypes = {
-    // TODO: children
+    children: React.PropTypes.node,
     // TODO: active list index?
   }
 

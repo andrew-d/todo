@@ -6,6 +6,7 @@ import './styles.scss';
 export default class TodoList extends React.Component {
   static propTypes = {
     listName: React.PropTypes.string.isRequired,
+    children: React.PropTypes.node,
   }
 
   render() {

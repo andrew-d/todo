@@ -7,4 +7,4 @@ export default {
            .then(checkStatus)
            .then(res => res.json());
   },
-}
+};

@@ -13,6 +13,17 @@ import TodoListMenuItem from '../components/TodoListMenuItem';
 
 
 class Home extends React.Component {
+  static propTypes = {
+    todos:        React.PropTypes.array.isRequired,
+    lists:        React.PropTypes.object.isRequired,
+    list:         React.PropTypes.object,
+    selectedList: React.PropTypes.number,
+
+    fetchTodos: React.PropTypes.func.isRequired,
+    fetchLists: React.PropTypes.func.isRequired,
+    selectList: React.PropTypes.func.isRequired,
+  }
+
   componentWillMount() {
     this.props.fetchLists();
     this.props.fetchTodos();
@@ -66,18 +77,18 @@ class Home extends React.Component {
 
     // Calculate finished percentage.
     const finishedItems = listItems.filter(i => i.complete).length,
-          finishedPercent = (finishedItems / listItems.length) * 100.0,
-          finishedString = finishedPercent.toFixed(2) + '%';
+      finishedPercent = (finishedItems / listItems.length) * 100.0,
+      finishedString = finishedPercent.toFixed(2) + '%';
 
     // TODO: make a component
     const progressBar = (
-      <div key='progress' className="progress">
+      <div key='progress' className='progress'>
         <div
-          className="progress-bar progress-bar-success"
-          role="progressbar"
-          aria-valuenow="20"
-          aria-valuemin="0"
-          aria-valuemax="100"
+          className='progress-bar progress-bar-success'
+          role='progressbar'
+          aria-valuenow='20'
+          aria-valuemin='0'
+          aria-valuemax='100'
           style={{width: finishedString}}
         >
           <span>{finishedString} Complete</span>
