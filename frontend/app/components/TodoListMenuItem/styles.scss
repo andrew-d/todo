@@ -1,2 +1,6 @@
 .TodoListMenuItem {
+  // Used for the header.
+  &.disabled {
+    cursor: inherit !important;
+  }
 }

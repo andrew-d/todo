@@ -60,7 +60,17 @@ class Home extends React.Component {
 
     return (
       <TodoListMenu>
-        {renderedItems}
+        {[
+          // The header item.
+          <TodoListMenuItem
+            key={'menu-item-header'}
+            name='Todo Lists'
+            disabled={true}
+          />,
+
+          // The actual menu items.
+          ...renderedItems,
+        ]}
       </TodoListMenu>
     );
   }

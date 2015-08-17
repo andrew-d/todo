@@ -8,6 +8,7 @@ export default class TodoListMenuItem extends React.Component {
   static propTypes = {
     name:           React.PropTypes.string.isRequired,
     active:         React.PropTypes.bool,
+    disabled:       React.PropTypes.bool,
     totalItems:     React.PropTypes.number,
     completedItems: React.PropTypes.number,
     onClick:        React.PropTypes.func,
@@ -15,6 +16,7 @@ export default class TodoListMenuItem extends React.Component {
 
   static defaultProps = {
     active: false,
+    disabled: false,
   }
 
   render() {
@@ -44,6 +46,7 @@ export default class TodoListMenuItem extends React.Component {
       'TodoListMenuItem': true,
       'list-group-item': true,
       'active': this.props.active,
+      'disabled': this.props.disabled,
     });
 
     return (
