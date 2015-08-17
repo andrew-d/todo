@@ -22,6 +22,13 @@ export default class ProgressBar extends React.Component {
     const percent = this.props.percent.toFixed(2);
     const styleClass = this.props.style == 'default' ? '' :
       'progress-bar-' + this.props.style;
+    const styles = {
+      // Always show some of the text.
+      minWidth: '3.5em',
+
+      // Bar width
+      width: percent + '%',
+    };
 
     return (
       <div key='progress' className='progress'>
@@ -31,9 +38,9 @@ export default class ProgressBar extends React.Component {
           aria-valuenow={percent}
           aria-valuemin='0'
           aria-valuemax='100'
-          style={{width: percent + '%'}}
+          style={styles}
         >
-          <span>{`${percent}% Complete`}</span>
+          <span>{percent + '%'}</span>
         </div>
       </div>
     );

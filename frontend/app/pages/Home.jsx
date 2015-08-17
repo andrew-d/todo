@@ -48,12 +48,12 @@ class Home extends React.Component {
     const menuItems = Object.values(this.props.lists);
 
     const renderedItems = menuItems.map((item) => (
-      // TODO: active item?
       <TodoListMenuItem
         key={`menu-item-${item.id}`}
         name={item.name}
         totalItems={10}
         completedItems={5}
+        active={this.props.selectedList === item.id}
         onClick={this.handleSelectList.bind(this, item.id)}
       />
     ));

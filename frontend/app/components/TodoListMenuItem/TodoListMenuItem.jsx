@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 
 import './styles.scss';
 
@@ -6,11 +7,14 @@ import './styles.scss';
 export default class TodoListMenuItem extends React.Component {
   static propTypes = {
     name:           React.PropTypes.string.isRequired,
+    active:         React.PropTypes.bool,
     totalItems:     React.PropTypes.number,
     completedItems: React.PropTypes.number,
     onClick:        React.PropTypes.func,
+  }
 
-    // TODO: active item
+  static defaultProps = {
+    active: false,
   }
 
   render() {
@@ -35,8 +39,15 @@ export default class TodoListMenuItem extends React.Component {
       }
     });
 
+    // Classes
+    const classes = cx({
+      'TodoListMenuItem': true,
+      'list-group-item': true,
+      'active': this.props.active,
+    });
+
     return (
-      <a className='TodoListMenuItem list-group-item' {...props}>
+      <a className={classes} {...props}>
         {span}
         {this.props.name}
       </a>
