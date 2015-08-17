@@ -6,6 +6,7 @@ import size from 'lodash-node/modern/collection/size';
 import { fetchTodos } from '../actions/todos';
 import { fetchLists } from '../actions/lists';
 import { selectList } from '../actions/ui';
+import ProgressBar from '../components/ProgressBar';
 import TodoList from '../components/TodoList';
 import TodoListItem from '../components/TodoListItem';
 import TodoListMenu from '../components/TodoListMenu';
@@ -76,32 +77,14 @@ class Home extends React.Component {
     ));
 
     // Calculate finished percentage.
-    const finishedItems = listItems.filter(i => i.complete).length,
-      finishedPercent = (finishedItems / listItems.length) * 100.0,
-      finishedString = finishedPercent.toFixed(2) + '%';
-
-    // TODO: make a component
-    const progressBar = (
-      <div key='progress' className='progress'>
-        <div
-          className='progress-bar progress-bar-success'
-          role='progressbar'
-          aria-valuenow='20'
-          aria-valuemin='0'
-          aria-valuemax='100'
-          style={{width: finishedString}}
-        >
-          <span>{finishedString} Complete</span>
-        </div>
-      </div>
-    );
-
+    const finishedItems = this.props.todos.filter(i => i.complete).length,
+      finishedPercent = (finishedItems / this.props.todos.length) * 100.0;
 
     return [
       <TodoList key='list' listName={this.props.list.name}>
         {renderedItems}
       </TodoList>,
-      progressBar,
+      <ProgressBar key='progress' percent={finishedPercent} />,
     ];
   }
 
