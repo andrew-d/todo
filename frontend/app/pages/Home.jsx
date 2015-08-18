@@ -86,9 +86,26 @@ class Home extends React.Component {
       />
     ));
 
+    if( renderedItems.length === 0 ) {
+      // TODO: This is a bit hack-ish, and depends on the implementation of
+      // the list - maybe split out to a component, or a prop of TodoListItem?
+      renderedItems.push(
+        <a className='list-group-item disabled'>
+          <i>List Is Empty</i>
+        </a>
+      );
+    }
+
     // Calculate finished percentage.
-    const finishedItems = this.props.todos.filter(i => i.complete).length,
+    let finishedPercent;
+
+    if( this.props.todos.length > 0 ) {
+      const finishedItems = this.props.todos.filter(i => i.complete).length;
+
       finishedPercent = (finishedItems / this.props.todos.length) * 100.0;
+    } else {
+      finishedPercent = 100.0;
+    }
 
     return [
       <TodoList key='list' listName={this.props.list.name}>
