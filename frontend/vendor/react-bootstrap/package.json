@@ -40,7 +40,7 @@
   "author": "Stephen J. Collings <stevoland@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=0.13 || 0.14.0-beta1 || 0.14.0-beta2"
+    "react": ">=0.13 || 0.14.0-beta1 || 0.14.0-beta2 || 0.14.0-beta3"
   },
   "devDependencies": {
     "babel": "^5.8.19",

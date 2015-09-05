@@ -7,7 +7,7 @@ build:
 	godep go build \
 		-o todo \
 		-v \
-		-ldflags "-X main.revision $(SHA) -X main.version $(VERSION)" \
+		-ldflags "-X main.revision=$(SHA) -X main.version=$(VERSION)" \
 		./server
 
 clean:

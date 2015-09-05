@@ -14,7 +14,7 @@ import 'font-awesome/css/font-awesome.css';
 
 // Render the app.
 import Root from './Root';
-import HashHistory from 'react-router/lib/HashHistory';
+import createHistory from 'history/lib/createHashHistory';
 
-const history = new HashHistory();
+const history = createHistory();
 ReactDOM.render(<Root history={history} />, document.getElementById('app'));

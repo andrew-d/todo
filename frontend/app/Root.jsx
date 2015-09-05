@@ -24,9 +24,8 @@ if (process.env.NODE_ENV === 'production') {
     require('redux-devtools').devTools(),
     require('redux-devtools').persistState(
       window.location.href.match(/[?&]debug_session=([^&]+)\b/)
-    ),
-    createStore
-  );
+    )
+  )(createStore);
 }
 
 // Build final store.
@@ -42,7 +41,7 @@ export default class Root extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        {() => renderRoutes(this.props.history)}
+        {renderRoutes(this.props.history)}
       </Provider>
     );
   }

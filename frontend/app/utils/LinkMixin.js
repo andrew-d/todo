@@ -13,6 +13,7 @@ export default {
   propTypes: {
     active: React.PropTypes.bool,
     activeClassName: React.PropTypes.string.isRequired,
+    onlyActiveOnIndex: React.PropTypes.bool.isRequired,
     disabled: React.PropTypes.bool,
     to: React.PropTypes.string.isRequired,
     params: React.PropTypes.object,
@@ -20,13 +21,54 @@ export default {
     onClick: React.PropTypes.func
   },
   contextTypes: {
-    router: () => React.PropTypes.func.isRequired
+    history: () => React.PropTypes.object.isRequired
   },
 
   getDefaultProps() {
     return {
-      activeClassName: 'active'
+      activeClassName: 'active',
+      onlyActiveOnIndex: false,
     };
+  },
+
+  getInitialState() {
+    var active = this.getActiveState();
+    return { active };
+  },
+
+  trySubscribe() {
+    var { history } = this.context;
+    if (!history) return;
+    this._unlisten = history.listen(this.handleHistoryChange);
+  },
+
+  tryUnsubscribe() {
+    if (!this._unlisten) return;
+    this._unlisten();
+    this._unlisten = undefined;
+  },
+
+  handleHistoryChange() {
+    var { active } = this.state;
+    var nextActive = this.getActiveState();
+    if (active !== nextActive) {
+      this.setState({ active: nextActive });
+    }
+  },
+
+  getActiveState() {
+    var { history } = this.context;
+    var { to, query, onlyActiveOnIndex } = this.props;
+    if (!history) return false;
+    return history.isActive(to, query, onlyActiveOnIndex);
+  },
+
+  componentDidMount() {
+    this.trySubscribe();
+  },
+
+  componentWillUnmount() {
+    this.tryUnsubscribe();
   },
 
   /**
@@ -36,20 +78,29 @@ export default {
    * Sets "onClick" to "handleRouteTo".
    */
   getLinkProps() {
-    let {
-      to,
-      params,
-      query,
-      ...props
-    } = this.props;
+    var { to, query } = this.props;
 
-    if (this.props.active === undefined) {
-      props.active = this.context.router.isActive(to, params, query);
+    var props = {
+      ...this.props,
+      onClick: this.handleClick
+    };
+
+    var { history } = this.context;
+    var { active } = this.state;
+
+    // Ignore if rendered outside the context
+    // of history, simplifies unit testing.
+    if (history) {
+      props.href = history.createHref(to, query);
+
+      if (active) {
+        if (props.activeClassName)
+          props.className += props.className !== '' ? ` ${props.activeClassName}` : props.activeClassName;
+
+        if (props.activeStyle)
+          props.style = { ...props.style, ...props.activeStyle };
+      }
     }
-
-    props.href = this.context.router.makeHref(to, params, query);
-
-    props.onClick = this.handleRouteTo;
 
     return props;
   },
@@ -78,7 +129,7 @@ export default {
     event.preventDefault();
 
     if (allowTransition) {
-      this.context.router.transitionTo(this.props.to, this.props.params, this.props.query);
+      this.context.history.pushState(this.props.state, this.props.to, this.props.query);
     }
   }
 };
